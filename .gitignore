@@ -1,0 +1,15 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+android_core/build
+app/.idea/
+app/local.properties
+.idea/
+app/app.iml
+revere.iml
+*.iml
+*.xml
+*.json
