@@ -58,7 +58,6 @@ class ViewController: JSQMessagesViewController {
         
         
         if senderDefault != nil {
-            println("this is true! this is the senderdefault: \(senderDefault), and timeDefault: \(timeDefault)")
             
             let date = NSDate()
             if date.compare(timeDefault!) == NSComparisonResult.OrderedDescending {
@@ -69,7 +68,6 @@ class ViewController: JSQMessagesViewController {
                 setupSenderAvatar()
             }
         } else {
-            println("getSenderID")
             getSenderID()
         }
     }
@@ -88,10 +86,8 @@ class ViewController: JSQMessagesViewController {
             return FTransactionResult.successWithValue(currentData)
             },
             {(error, commited, snapshot) in
-                println("\(snapshot.value!)")
                 var value = snapshot.value as? Int
                 self.senderID = (((value! - 1) % 5) + 1)
-                println("\(self.senderID)")
                 self.groupnumber = "\((value! - 1) / 5)"
                 
                 let date = NSDate()
@@ -101,9 +97,7 @@ class ViewController: JSQMessagesViewController {
                 
                 NSUserDefaults.standardUserDefaults().setObject(self.groupnumber, forKey: self.groupKey)
                 NSUserDefaults.standardUserDefaults().setObject(thisSunday, forKey: self.timeKey)
-                
-                println("this is the groupnumber: \(self.groupnumber!)")
-                println("this sunday: \(thisSunday!)")
+
                 if (self.senderID! - 1) == 0 {
                     self.sendIceBreaker()
                 }
