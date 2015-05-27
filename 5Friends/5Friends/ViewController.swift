@@ -75,9 +75,9 @@ class ViewController: JSQMessagesViewController {
     }
     
     func getSenderID(){
-        var upvotesRef = Firebase(url: "https://intense-fire-9360.firebaseio.com/GOD/-JpuKz1zV_-sI6FGr4YH/current")
+        var godRef = Firebase(url: "https://intense-fire-9360.firebaseio.com/GOD/-JpuKz1zV_-sI6FGr4YH/current")
         
-        upvotesRef.runTransactionBlock({
+        godRef.runTransactionBlock({
             (currentData:FMutableData!) in
             var value = currentData.value as? Int
             if value == nil {
@@ -90,8 +90,8 @@ class ViewController: JSQMessagesViewController {
             {(error, commited, snapshot) in
                 println("\(snapshot.value!)")
                 var value = snapshot.value as? Int
-                self.sender = "\(((value! - 1) % 5) + 1)"
-                println("\(self.sender)")
+                self.senderID = (((value! - 1) % 5) + 1)
+                println("\(self.senderID)")
                 self.groupnumber = "\((value! - 1) / 5)"
                 
                 let date = NSDate()
@@ -99,16 +99,32 @@ class ViewController: JSQMessagesViewController {
                 calendar.dateBySettingHour(0, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
                 let thisSunday = calendar.dateBySettingUnit(.WeekdayCalendarUnit, value: 1, ofDate: date, options: NSCalendarOptions())
                 
-                NSUserDefaults.standardUserDefaults().setObject(self.sender, forKey: self.senderKey)
                 NSUserDefaults.standardUserDefaults().setObject(self.groupnumber, forKey: self.groupKey)
                 NSUserDefaults.standardUserDefaults().setObject(thisSunday, forKey: self.timeKey)
                 
                 println("this is the groupnumber: \(self.groupnumber!)")
                 println("this sunday: \(thisSunday!)")
-                self.setupSenderAvatar()
+                if (self.senderID! - 1) == 0 {
+                    self.sendIceBreaker()
+                }
+                self.setUpSenderName()
                 return
         })
     }
+    
+    func setUpSenderName(){
+        var nameRef = Firebase(url:"https://intense-fire-9360.firebaseio.com/Names")
+        
+        nameRef.observeEventType(.Value, withBlock: { snapshot in
+            var names = snapshot.value as [String]
+            self.sender = names[self.senderID!]
+            NSUserDefaults.standardUserDefaults().setObject(self.sender, forKey: self.senderKey)
+            self.setupSenderAvatar()
+            }, withCancelBlock: { error in
+                println(error.description)
+        })
+    }
+    
     
     func setupSenderAvatar(){
         let profileImageUrl = user?.providerData["cachedUserProfile"]?["profile_image_url_https"] as? NSString
@@ -132,6 +148,25 @@ class ViewController: JSQMessagesViewController {
             "created":kFirebaseServerValueTimestamp
             ])
     }
+    
+    func sendIceBreaker(){
+        var iceBreakerRef = Firebase(url:"https://intense-fire-9360.firebaseio.com/IceBreaker")
+        
+        iceBreakerRef.observeEventType(.Value, withBlock: { snapshot in
+            var text = snapshot.value as String
+            var groupRef = Firebase(url: "https://intense-fire-9360.firebaseio.com/group\(self.groupnumber!)")
+            groupRef.childByAutoId().setValue([
+                "text":text,
+                "sender":"5Friends",
+                "imageUrl":"",
+                "created":self.kFirebaseServerValueTimestamp
+                ])
+            }, withCancelBlock: { error in
+                println(error.description)
+        })
+
+    }
+    
     
     func tempSendMessage(text: String!, sender: String!) {
         let message = Message(text: text, sender: sender, imageUrl: senderImageUrl)
