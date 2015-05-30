@@ -59,7 +59,6 @@
 		1D75B1531B1597BC003B702A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B1521B1597BC003B702A /* AppDelegate.swift */; };
 		1D75B1551B1597BC003B702A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B1541B1597BC003B702A /* ViewController.swift */; };
 		1D75B1581B1597BC003B702A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D75B1561B1597BC003B702A /* Main.storyboard */; };
-		1D75B15A1B1597BC003B702A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D75B1591B1597BC003B702A /* Images.xcassets */; };
 		1D75B15D1B1597BC003B702A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D75B15B1B1597BC003B702A /* LaunchScreen.xib */; };
 		1D75B1691B1597BC003B702A /* _FriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B1681B1597BC003B702A /* _FriendsTests.swift */; };
 		1D75B1731B1597EB003B702A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D75B1721B1597EB003B702A /* Social.framework */; };
@@ -124,6 +123,7 @@
 		1D75B3A11B15A47C003B702A /* JSQMessagesToolbarContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B3601B159BEB003B702A /* JSQMessagesToolbarContentView.m */; };
 		1D75B3A21B15A47C003B702A /* JSQMessagesTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B3631B159BEB003B702A /* JSQMessagesTypingIndicatorFooterView.m */; };
 		1D75B3A31B15A4A1003B702A /* JSQSystemSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B3681B159BFA003B702A /* JSQSystemSoundPlayer.m */; };
+		1DAB63B41B1983A400BE7DDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB63B31B1983A400BE7DDB /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -328,7 +328,6 @@
 		1D75B1521B1597BC003B702A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1D75B1541B1597BC003B702A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1D75B1571B1597BC003B702A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		1D75B1591B1597BC003B702A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1D75B15C1B1597BC003B702A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		1D75B1621B1597BC003B702A /* 5FriendsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 5FriendsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D75B1671B1597BC003B702A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -425,6 +424,7 @@
 		1D75B3681B159BFA003B702A /* JSQSystemSoundPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSQSystemSoundPlayer.m; sourceTree = "<group>"; };
 		1D75B36E1B159F49003B702A /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		1D75B3701B15A359003B702A /* FirebaseSimpleLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseSimpleLogin.framework; sourceTree = "<group>"; };
+		1DAB63B31B1983A400BE7DDB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -852,11 +852,11 @@
 				1D75B1521B1597BC003B702A /* AppDelegate.swift */,
 				1D75B1541B1597BC003B702A /* ViewController.swift */,
 				1D75B1561B1597BC003B702A /* Main.storyboard */,
-				1D75B1591B1597BC003B702A /* Images.xcassets */,
 				1D75B15B1B1597BC003B702A /* LaunchScreen.xib */,
 				1D75B1501B1597BC003B702A /* Supporting Files */,
 				1D75B2481B1599BD003B702A /* 5FriendsMessages.swift */,
 				1D75B24A1B1599E9003B702A /* 5Friends-Bridging-Header.h */,
+				1DAB63B31B1983A400BE7DDB /* Images.xcassets */,
 			);
 			path = 5Friends;
 			sourceTree = "<group>";
@@ -1155,6 +1155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D75B3721B15A40B003B702A /* bubble.png in Resources */,
+				1DAB63B41B1983A400BE7DDB /* Images.xcassets in Resources */,
 				1D75B3731B15A40B003B702A /* bubble@2x.png in Resources */,
 				1D75B3741B15A40B003B702A /* bubble_min.png in Resources */,
 				1D42B5F21B1715A800EFE80F /* list-image-placeholder@2x.png in Resources */,
@@ -1199,7 +1200,6 @@
 				1D42B5E91B1715A800EFE80F /* UAInteractiveNotifications.strings in Resources */,
 				1D75B15D1B1597BC003B702A /* LaunchScreen.xib in Resources */,
 				1D42B6051B1715A800EFE80F /* UAPushSettingsAddTagViewController.xib in Resources */,
-				1D75B15A1B1597BC003B702A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

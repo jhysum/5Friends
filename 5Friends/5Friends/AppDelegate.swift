@@ -12,24 +12,11 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var badgeNumber = 0
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
-        // Register for Push Notitications, if running iOS 8
-//        if application.respondsToSelector("registerUserNotificationSettings:") {
-//            
-//            let types:UIUserNotificationType = (.Alert | .Badge | .Sound)
-//            let settings:UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
-//            
-//            application.registerUserNotificationSettings(settings)
-//            application.registerForRemoteNotifications()
-//            
-//        } else {
-//            // Register for Push Notifications before iOS 8
-//            application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
-//        }
         
         // Set log level for debugging config loading (optional)
         // It will be set to the value in the loaded config upon takeOff
@@ -51,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Set the icon badge to zero on startup (optional)
         UAirship.push().resetBadge()
+        badgeNumber = 0
         
         // Set the notification types required for the app (optional). This value defaults
         // to badge, alert and sound, so it's only necessary to set it if you want
@@ -85,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         UAirship.push().resetBadge()
+        badgeNumber = 0
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -96,8 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Optionally provide a delegate that will be used to handle notifications received while the app is running
         // UAPush.shared().pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
 
+        badgeNumber = badgeNumber + 1
         // Reset the badge after a push received (optional)
-        UAirship.push().resetBadge()
+        UAirship.push().setBadgeNumber(badgeNumber)
         
     }
     
@@ -109,7 +99,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Reset the badge after a push received (optional)
         
         if (application.applicationState != UIApplicationState.Background){
-            UAirship.push().resetBadge()
+            badgeNumber = badgeNumber + 1
+            UAirship.push().setBadgeNumber(badgeNumber)
         }
     }
     
