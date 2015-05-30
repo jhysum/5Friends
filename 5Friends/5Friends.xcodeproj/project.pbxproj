@@ -18,7 +18,6 @@
 		1D42B5141B16FDBA00EFE80F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D42B5131B16FDBA00EFE80F /* MessageUI.framework */; };
 		1D42B5161B16FDDC00EFE80F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D42B5151B16FDDC00EFE80F /* MapKit.framework */; };
 		1D42B51A1B16FE7600EFE80F /* AirshipConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D42B5191B16FE7600EFE80F /* AirshipConfig.plist */; };
-		1D42B51C1B17152B00EFE80F /* libUAirship-6.0.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D42B51B1B17152B00EFE80F /* libUAirship-6.0.2.a */; };
 		1D42B5E61B1715A800EFE80F /* libUAirship-6.0.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D42B5871B1715A800EFE80F /* libUAirship-6.0.2.a */; };
 		1D42B5E71B1715A800EFE80F /* NSString+UALocalization.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D42B5981B1715A800EFE80F /* NSString+UALocalization.m */; };
 		1D42B5E81B1715A800EFE80F /* NSString+UASizeWithFontCompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D42B59A1B1715A800EFE80F /* NSString+UASizeWithFontCompatibility.m */; };
@@ -124,6 +123,9 @@
 		1D75B3A21B15A47C003B702A /* JSQMessagesTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B3631B159BEB003B702A /* JSQMessagesTypingIndicatorFooterView.m */; };
 		1D75B3A31B15A4A1003B702A /* JSQSystemSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D75B3681B159BFA003B702A /* JSQSystemSoundPlayer.m */; };
 		1DAB63B41B1983A400BE7DDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB63B31B1983A400BE7DDB /* Images.xcassets */; };
+		1DAB63B61B19E7BE00BE7DDB /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DAB63B51B19E7BE00BE7DDB /* Parse.framework */; };
+		1DAB63BE1B19EDE400BE7DDB /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DAB63BA1B19EDE400BE7DDB /* ParseUI.framework */; };
+		1DAB63C11B19EE9F00BE7DDB /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DAB63BF1B19EDEB00BE7DDB /* Bolts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -425,6 +427,12 @@
 		1D75B36E1B159F49003B702A /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		1D75B3701B15A359003B702A /* FirebaseSimpleLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseSimpleLogin.framework; sourceTree = "<group>"; };
 		1DAB63B31B1983A400BE7DDB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1DAB63B51B19E7BE00BE7DDB /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		1DAB63B71B19EDE400BE7DDB /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
+		1DAB63B81B19EDE400BE7DDB /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
+		1DAB63B91B19EDE400BE7DDB /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
+		1DAB63BA1B19EDE400BE7DDB /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		1DAB63BF1B19EDEB00BE7DDB /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -434,6 +442,8 @@
 			files = (
 				1D42B5161B16FDDC00EFE80F /* MapKit.framework in Frameworks */,
 				1D75B30E1B159AC3003B702A /* AudioToolbox.framework in Frameworks */,
+				1DAB63BE1B19EDE400BE7DDB /* ParseUI.framework in Frameworks */,
+				1DAB63C11B19EE9F00BE7DDB /* Bolts.framework in Frameworks */,
 				1D42B5141B16FDBA00EFE80F /* MessageUI.framework in Frameworks */,
 				1D42B5121B16FDB300EFE80F /* CoreLocation.framework in Frameworks */,
 				1D42B5101B16FDAC00EFE80F /* CoreTelephony.framework in Frameworks */,
@@ -447,13 +457,13 @@
 				1D75B17F1B15989C003B702A /* CFNetwork.framework in Frameworks */,
 				1D75B3711B15A359003B702A /* FirebaseSimpleLogin.framework in Frameworks */,
 				1D75B1851B1598BC003B702A /* libc++.dylib in Frameworks */,
-				1D42B51C1B17152B00EFE80F /* libUAirship-6.0.2.a in Frameworks */,
 				1D75B1831B1598B2003B702A /* libicucore.dylib in Frameworks */,
 				1D75B36F1B159F49003B702A /* Firebase.framework in Frameworks */,
 				1D75B17B1B159878003B702A /* QuartzCore.framework in Frameworks */,
 				1D75B1771B15980F003B702A /* UIKit.framework in Frameworks */,
 				1D75B1751B1597FA003B702A /* Accounts.framework in Frameworks */,
 				1D75B1731B1597EB003B702A /* Social.framework in Frameworks */,
+				1DAB63B61B19E7BE00BE7DDB /* Parse.framework in Frameworks */,
 				1D42B5E61B1715A800EFE80F /* libUAirship-6.0.2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -805,6 +815,12 @@
 		1D75B1441B1597BC003B702A = {
 			isa = PBXGroup;
 			children = (
+				1DAB63BF1B19EDEB00BE7DDB /* Bolts.framework */,
+				1DAB63B71B19EDE400BE7DDB /* ParseCrashReporting.framework */,
+				1DAB63B81B19EDE400BE7DDB /* ParseFacebookUtils.framework */,
+				1DAB63B91B19EDE400BE7DDB /* ParseFacebookUtilsV4.framework */,
+				1DAB63BA1B19EDE400BE7DDB /* ParseUI.framework */,
+				1DAB63B51B19E7BE00BE7DDB /* Parse.framework */,
 				1D42B51D1B1715A800EFE80F /* Airship */,
 				1D42B51B1B17152B00EFE80F /* libUAirship-6.0.2.a */,
 				1D42B5151B16FDDC00EFE80F /* MapKit.framework */,

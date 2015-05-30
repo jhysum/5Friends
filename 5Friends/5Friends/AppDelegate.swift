@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,41 +18,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        Parse.setApplicationId("my62a2VFXihe66Hg6g395tUTEsPHatVw66ukl2M8",
+            clientKey: "hFjLcC1j9hOILFimQ5eC5frVamyXrZLVLtoZt0M1")
         
-        // Set log level for debugging config loading (optional)
-        // It will be set to the value in the loaded config upon takeOff
-        UAirship.setLogLevel(UALogLevel.Trace)
+        // Register for Push Notitications
+        if application.applicationState != UIApplicationState.Background {
+            // Track an app open here if we launch with a push, unless
+            // "content_available" was used to trigger a background push (introduced in iOS 7).
+            // In that case, we skip tracking here to avoid double counting the app-open.
+            
+            let preBackgroundPush = !application.respondsToSelector("backgroundRefreshStatus")
+            let oldPushHandlerOnly = !self.respondsToSelector("application:didReceiveRemoteNotification:fetchCompletionHandler:")
+            var pushPayload = false
+            if let options = launchOptions {
+                pushPayload = options[UIApplicationLaunchOptionsRemoteNotificationKey] != nil
+            }
+            if (preBackgroundPush || oldPushHandlerOnly || pushPayload) {
+                PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block:nil)
+            }
+        }
+        if application.respondsToSelector("registerUserNotificationSettings:") {
+            let userNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
+            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            let types = UIRemoteNotificationType.Badge | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Sound
+            application.registerForRemoteNotificationTypes(types)
+        }
         
-        // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
-        // or set runtime properties here.
-        var config:UAConfig = UAConfig.defaultConfig()
-        
-        // You can then programmatically override the plist values:
-        // config.developmentAppKey = "YourKey";
-        // etc.
-        
-        // Call takeOff (which creates the UAirship singleton)
-        UAirship.takeOff(config)
-        
-        // Print out the application configuration for debugging (optional)
-        println("Config: \(config.description)");
-        
-        // Set the icon badge to zero on startup (optional)
-        UAirship.push().resetBadge()
         badgeNumber = 0
-        
-        // Set the notification types required for the app (optional). This value defaults
-        // to badge, alert and sound, so it's only necessary to set it if you want
-        // to add or remove types.
-        UAirship.push().userNotificationTypes = (UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound)
-
-        // User notifications will not be enabled until userPushNotificationsEnabled is
-        // set "true" on UAPush. Once enabled, the setting will be persisted and the user
-        // will be prompted to allow notifications. You should wait for a more appropriate
-        // time to enable push to increase the likelihood that the user will accept
-        // notifications.
-        UAirship.push().userPushNotificationsEnabled = true
-        
+        let installation = PFInstallation.currentInstallation()
+        installation.badge = badgeNumber
+        installation.save()
         
         return true
     }
@@ -72,8 +71,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        UAirship.push().resetBadge()
         badgeNumber = 0
+        let installation = PFInstallation.currentInstallation()
+        installation.badge = badgeNumber
+        installation.save()
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -83,34 +84,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo:NSDictionary) {
         println("Received remote notification (in appDelegate): \(userInfo)")
         // Optionally provide a delegate that will be used to handle notifications received while the app is running
-        // UAPush.shared().pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
-
-        badgeNumber = badgeNumber + 1
-        // Reset the badge after a push received (optional)
-        UAirship.push().setBadgeNumber(badgeNumber)
         
+        if application.applicationState == UIApplicationState.Inactive {
+            badgeNumber = badgeNumber + 1
+            let installation = PFInstallation.currentInstallation()
+            installation.badge = badgeNumber
+            installation.save()
+            PFPush.handlePush(userInfo)
+            PFAnalytics.trackAppOpenedWithRemoteNotificationPayloadInBackground(userInfo, block: nil)
+        } else {
+            let installation = PFInstallation.currentInstallation()
+            installation.badge = 0
+            installation.save()
+        }
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: NSDictionary, fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        println("Received remote notification (in appDelegate): \(userInfo)")
-        // Optionally provide a delegate that will be used to handle notifications received while the app is running
-        // UAPush.shared().pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
+        println("Received remote notification (in appDelegate): \(userInfo)")        
         
-        // Reset the badge after a push received (optional)
-        
-        if (application.applicationState != UIApplicationState.Background){
+        if application.applicationState == UIApplicationState.Inactive {
             badgeNumber = badgeNumber + 1
-            UAirship.push().setBadgeNumber(badgeNumber)
+            let installation = PFInstallation.currentInstallation()
+            installation.badge = badgeNumber
+            installation.save()
+            PFPush.handlePush(userInfo)
+            
+            PFAnalytics.trackAppOpenedWithRemoteNotificationPayloadInBackground(userInfo, block: nil)
+        } else {
+            let installation = PFInstallation.currentInstallation()
+            installation.badge = 0
+            installation.save()
         }
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        println("Device Token functino: \(deviceToken)")
+        let installation = PFInstallation.currentInstallation()
+        installation.setDeviceTokenFromData(deviceToken)
+        installation.save()
+        println("Device Token function: \(deviceToken)")
     }
     
+
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        println("This is the Error: \(error)")
+        if error.code == 3010 {
+            println("Push notifications are not supported in the iOS Simulator.")
+        } else {
+            println("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
+        }
     }
+    
 
 }
 

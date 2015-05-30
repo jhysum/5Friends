@@ -100,8 +100,10 @@ class ViewController: JSQMessagesViewController {
                 if (self.senderID! - 1) == 0 {
                     self.sendIceBreaker()
                 }
-                UAirship.push().addTag("group\(self.groupnumber)")
-                UAirship.push().updateRegistration()
+
+                PFPush.subscribeToChannel("jesse", error: nil)
+                PFPush.subscribeToChannelInBackground("group\(self.groupnumber!)", block: nil)
+                println("these are the channels: \(PFPush.getSubscribedChannels(nil))")
                 self.setUpSenderName()
                 return
         })
@@ -143,71 +145,16 @@ class ViewController: JSQMessagesViewController {
             "created":kFirebaseServerValueTimestamp
             ])
         
-        sendRest(text)
-        var localNotification: UILocalNotification = UILocalNotification()
-        localNotification.alertAction = "Testing notifications on iOS8"
-        localNotification.alertBody = text
-        localNotification.fireDate = NSDate(timeIntervalSinceNow: 1)
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
-        UAirship.push()
+        sendParse(text)
     }
     
-    func sendRest(text: String!){
-        let url:NSURL = NSURL(string: "https://go.urbanairship.com/api/push/")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        var err: NSError?
+    func sendParse(text: String!){
+        let push = PFPush()
         
-        let jsonObject: [AnyObject] = [
-            ["audience": ["tag" : "group\(self.groupnumber)"], "notification": ["alert": text], "device_types": "all"]
-        ]
-
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: &err)
-
-        let username = "OgaPpdLFQny1M44AVAkRYQ"
-        let password = "Z_eKqqlhTNuccg9C_gKT8A"
-        let loginString = NSString(format: "%@:%@", username, password)
-        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64LoginString = loginData.base64EncodedStringWithOptions(nil)
-        request.addValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        request.addValue("Z_eKqqlhTNuccg9C_gKT8A", forHTTPHeaderField: "password")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/vnd.urbanairship+json; version=3", forHTTPHeaderField: "Accept")
-        request.addValue("jsonp", forHTTPHeaderField: "dataType")
-
-        println("Request: \(request.allHTTPHeaderFields)")
-        
-        
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request,completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-            
-            // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
-            if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
-            }
-            else {
-                // The JSONObjectWithData constructor didn't return an error. But, we should still
-                // check and make sure that json has a value using optional binding.
-                if let parseJSON = json {
-                    // Okay, the parsedJSON is here, let's get the value for 'success' out of it
-                    var success = parseJSON["success"] as? Int
-                    println("Succes: \(success)")
-                }
-                else {
-                    // Woa, okay the json object was nil, something went worng. Maybe the server isn't running?
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: \(jsonStr)")
-                }
-            }
-        })
-        
-        task.resume()
+        // Be sure to use the plural 'setChannels'.
+        push.setChannel("group\(self.groupnumber!)")
+        push.setData([ "alert": "\(text)", "badge": "Increment", "sound": "default" ])
+        push.sendPush(nil)
     }
     
     func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
