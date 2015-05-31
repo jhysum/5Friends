@@ -10,6 +10,3 @@
 #import <Parse/Parse.h>
 #import "JSQMessages.h"
 #import "JSQMessageData.h"
-#import "UAirship.h"
-#import "UAConfig.h"
-#import "UAPush.h"
