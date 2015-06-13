@@ -84,7 +84,7 @@ class ViewController: JSQMessagesViewController {
             currentData.value = value! + 1
             return FTransactionResult.successWithValue(currentData)
             },
-            {(error, commited, snapshot) in
+            andCompletionBlock: {(error, commited, snapshot) in
                 var value = snapshot.value as? Int
                 self.senderID = (((value! - 1) % 5) + 1)
                 self.groupnumber = "\((value! - 1) / 5)"
@@ -113,7 +113,7 @@ class ViewController: JSQMessagesViewController {
         var nameRef = Firebase(url:"https://intense-fire-9360.firebaseio.com/Names")
         
         nameRef.observeEventType(.Value, withBlock: { snapshot in
-            var names = snapshot.value as [String]
+            var names = snapshot.value as! [String]
             self.sender = names[self.senderID!]
             NSUserDefaults.standardUserDefaults().setObject(self.sender, forKey: self.senderKey)
             self.setupSenderAvatar()
@@ -126,8 +126,8 @@ class ViewController: JSQMessagesViewController {
     func setupSenderAvatar(){
         let profileImageUrl = user?.providerData["cachedUserProfile"]?["profile_image_url_https"] as? NSString
         if let urlString = profileImageUrl {
-            setupAvatarImage(sender, imageUrl: urlString, incoming: false)
-            senderImageUrl = urlString
+            setupAvatarImage(sender, imageUrl: urlString as String, incoming: false)
+            senderImageUrl = urlString as String
         } else {
             setupAvatarColor(sender, incoming: false)
             senderImageUrl = ""
@@ -162,7 +162,7 @@ class ViewController: JSQMessagesViewController {
         if NSJSONSerialization.isValidJSONObject(value) {
             if let data = NSJSONSerialization.dataWithJSONObject(value, options: options, error: nil) {
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                    return string
+                    return string as String
                 }
             }
         }
@@ -181,7 +181,7 @@ class ViewController: JSQMessagesViewController {
         var iceBreakerRef = Firebase(url:"https://intense-fire-9360.firebaseio.com/IceBreaker")
         
         iceBreakerRef.observeEventType(.Value, withBlock: { snapshot in
-            var text = snapshot.value as String
+            var text = snapshot.value as! String
             var groupRef = Firebase(url: "https://intense-fire-9360.firebaseio.com/group\(self.groupnumber!)")
             groupRef.childByAutoId().setValue([
                 "text":text,
@@ -227,7 +227,7 @@ class ViewController: JSQMessagesViewController {
         let b = CGFloat(Float(rgbValue & 0xFF)/255.0)
         let color = UIColor(red: r, green: g, blue: b, alpha: 0.5)
         
-        let nameLength = countElements(name)
+        let nameLength = count(name)
         let initials : String? = name.substringToIndex(advance(sender.startIndex, min(1, nameLength)))
         let userImage = JSQMessagesAvatarFactory.avatarWithUserInitials(initials, backgroundColor: color, textColor: UIColor.blackColor(), font: UIFont.systemFontOfSize(CGFloat(13)), diameter: diameter)
         
@@ -304,7 +304,7 @@ class ViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as JSQMessagesCollectionViewCell
+        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
         
         let message = messages[indexPath.item]
         if message.sender() == sender {

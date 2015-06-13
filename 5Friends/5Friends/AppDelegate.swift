@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo:NSDictionary) {
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo:[NSObject: AnyObject]) {
         println("Received remote notification (in appDelegate): \(userInfo)")
         // Optionally provide a delegate that will be used to handle notifications received while the app is running
         
@@ -99,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: NSDictionary, fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject: AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         println("Received remote notification (in appDelegate): \(userInfo)")        
         
         if application.applicationState == UIApplicationState.Inactive {
