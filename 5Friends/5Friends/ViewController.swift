@@ -238,6 +238,9 @@ class ViewController: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        JSQMessagesCollectionViewCell.registerMenuAction("customaction:")
+        JSQMessagesCollectionViewCell.registerMenuAction(Selector("delete:"))
+        UIMenuController.sharedMenuController().menuItems = [UIMenuItem(title: "Custom Action", action: "customaction:")]
         inputToolbar.contentView.leftBarButtonItem = nil
         automaticallyScrollsToMostRecentMessage = true
         navigationController?.navigationBar.topItem?.title = "5Friends"
@@ -310,6 +313,8 @@ class ViewController: JSQMessagesViewController {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
         
+        cell.canPerformAction("customaction:", withSender: senderId)
+        
         let message = messages[indexPath.item]
         if message.senderId == senderId {
             cell.textView.textColor = UIColor.blackColor()
@@ -344,6 +349,26 @@ class ViewController: JSQMessagesViewController {
         }
         
         return NSAttributedString(string:message.senderId)
+    }
+    
+    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) -> Bool {
+        println("this is the action \(action)")
+        if (action == "customaction:") {
+                return true
+        }
+        
+        return super.collectionView(collectionView, canPerformAction: action, forItemAtIndexPath: indexPath, withSender: sender)
+    }
+    
+    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
+        println("this is the perform action: \(action)")
+        if (action == "customaction:") {
+            customaction()
+        }
+    }
+    
+    func customaction(){
+        println("this is deleting")
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
