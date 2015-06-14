@@ -8,5 +8,7 @@
 
 #import <Firebase/Firebase.h>
 #import <Parse/Parse.h>
-#import "JSQMessages.h"
-#import "JSQMessageData.h"
+#import <JSQMessagesViewController/JSQMessages.h>
+#import <JSQMessagesViewController/JSQMessageData.h>
+//#import "JSQMessages.h"
+//#import "JSQMessageData.h"

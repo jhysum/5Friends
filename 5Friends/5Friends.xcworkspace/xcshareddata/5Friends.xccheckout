@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>526512EB-83EC-42FA-81F7-33F6751BDA7E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>5Friends</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>013F168D795A711EB810FA24A2175AC3B45CD8D8</key>
+		<string>github.com:jhysum/5Friends.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>5Friends/5Friends.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>013F168D795A711EB810FA24A2175AC3B45CD8D8</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:jhysum/5Friends.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>013F168D795A711EB810FA24A2175AC3B45CD8D8</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>013F168D795A711EB810FA24A2175AC3B45CD8D8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>5Friends</string>
+		</dict>
+	</array>
+</dict>
+</plist>

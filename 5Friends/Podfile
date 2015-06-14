@@ -1,0 +1,11 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '7.0'
+
+target '5Friends' do
+pod 'JSQMessagesViewController'
+end
+
+target '5FriendsTests' do
+pod 'JSQMessagesViewController'
+end
+

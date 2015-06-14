@@ -12,6 +12,8 @@
 	<dict>
 		<key>013F168D795A711EB810FA24A2175AC3B45CD8D8</key>
 		<string>github.com:jhysum/5Friends.git</string>
+		<key>90530B99EB0008E7A50951FDFBE02169118FA649</key>
+		<string>github.com:jessesquires/JSQMessagesViewController.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>5Friends/5Friends.xcodeproj</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>013F168D795A711EB810FA24A2175AC3B45CD8D8</key>
 		<string>../../..</string>
+		<key>90530B99EB0008E7A50951FDFBE02169118FA649</key>
+		<string>../../..5Friends/JSQMessagesViewController</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:jhysum/5Friends.git</string>
@@ -35,6 +39,14 @@
 			<string>013F168D795A711EB810FA24A2175AC3B45CD8D8</string>
 			<key>IDESourceControlWCCName</key>
 			<string>5Friends</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>90530B99EB0008E7A50951FDFBE02169118FA649</string>
+			<key>IDESourceControlWCCName</key>
+			<string>JSQMessagesViewController</string>
 		</dict>
 	</array>
 </dict>
