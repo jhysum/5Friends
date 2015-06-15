@@ -27,7 +27,6 @@ class ViewController: JSQMessagesViewController {
     var groupnumber:String?
     var senderID:Int?
     
-    
     // *** STEP 1: STORE FIREBASE REFERENCES
     var messagesRef: Firebase!
     var nameRef: Firebase!
@@ -57,23 +56,28 @@ class ViewController: JSQMessagesViewController {
         let groupDefault = NSUserDefaults.standardUserDefaults().stringForKey(groupKey)
         
         if senderDefault != nil {
-            
+            println("this is senderdefault not nill")
             let date = NSDate()
+            println("This is the date right now: \(date)")
+            println("this is the saved date: \(timeDefault!)")
             if date.compare(timeDefault!) == NSComparisonResult.OrderedDescending {
                 getSenderID()
             } else {
+                println("this is senderdefaul")
                 self.senderId = senderDefault
                 self.senderDisplayName = senderDefault
                 self.groupnumber = groupDefault
                 setupSenderAvatar()
             }
         } else {
+            println("this is senderdefault nill")
             getSenderID()
         }
     }
     
     func getSenderID(){
         var godRef = Firebase(url: "https://intense-fire-9360.firebaseio.com/GOD/-JpuKz1zV_-sI6FGr4YH/current")
+        println("THis is inside the godref")
         
         godRef.runTransactionBlock({
             (currentData:FMutableData!) in
@@ -81,12 +85,13 @@ class ViewController: JSQMessagesViewController {
             if value == nil {
                 value = 0
             }
-            
+            println("This is incrementing super duper slowly.")
             currentData.value = value! + 1
             return FTransactionResult.successWithValue(currentData)
             },
             andCompletionBlock: {(error, commited, snapshot) in
                 var value = snapshot.value as? Int
+                println("this is inside the completionblock")
                 self.senderID = (((value! - 1) % 5) + 1)
                 self.groupnumber = "\((value! - 1) / 5)"
                 
@@ -94,6 +99,8 @@ class ViewController: JSQMessagesViewController {
                 let calendar = NSCalendar.currentCalendar()
                 calendar.dateBySettingHour(0, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
                 let thisSunday = calendar.dateBySettingUnit(.WeekdayCalendarUnit, value: 1, ofDate: date, options: NSCalendarOptions())
+                
+                println("this is the sunday: \(thisSunday!)")
                 
                 NSUserDefaults.standardUserDefaults().setObject(self.groupnumber, forKey: self.groupKey)
                 NSUserDefaults.standardUserDefaults().setObject(thisSunday, forKey: self.timeKey)
@@ -112,12 +119,15 @@ class ViewController: JSQMessagesViewController {
     
     func setUpSenderName(){
         var nameRef = Firebase(url:"https://intense-fire-9360.firebaseio.com/Names")
-        
+        println("setting up name")
         nameRef.observeEventType(.Value, withBlock: { snapshot in
             var names = snapshot.value as! [String]
-            self.senderId = "\(self.senderID)"
+//            self.senderId = "\(self.senderID!)"
+            self.senderId = names[self.senderID!]
             self.senderDisplayName = names[self.senderID!]
-            NSUserDefaults.standardUserDefaults().setObject(self.senderId, forKey: self.senderKey)
+            println("this is new senderid = \(self.senderId)")
+            println("\(self.senderDisplayName)")
+            NSUserDefaults.standardUserDefaults().setObject(self.senderDisplayName, forKey: self.senderKey)
             self.setupSenderAvatar()
             }, withCancelBlock: { error in
                 println(error.description)
@@ -128,10 +138,10 @@ class ViewController: JSQMessagesViewController {
     func setupSenderAvatar(){
         let profileImageUrl = user?.providerData["cachedUserProfile"]?["profile_image_url_https"] as? NSString
         if let urlString = profileImageUrl {
-            setupAvatarImage(senderId, imageUrl: urlString as String, incoming: false)
+            setupAvatarImage(senderDisplayName, imageUrl: urlString as String, incoming: false)
             senderImageUrl = urlString as String
         } else {
-            setupAvatarColor(senderId, incoming: false)
+            setupAvatarColor(senderDisplayName, incoming: false)
             senderImageUrl = ""
         }
         
@@ -140,6 +150,12 @@ class ViewController: JSQMessagesViewController {
     
     func sendMessage(text: String!, sender: String!) {
         // *** STEP 3: ADD A MESSAGE TO FIREBASE
+        
+        println("this is the sender \(sender)")
+        if (sender == "default"){
+            return
+        }
+        
         messagesRef.childByAutoId().setValue([
             "text":text,
             "sender":sender,
@@ -169,14 +185,6 @@ class ViewController: JSQMessagesViewController {
             }
         }
         return ""
-        //        let alertj = JSONStringify(alertobject, prettyPrinted: false) as String
-        //        let username = "OgaPpdLFQny1M44AVAkRYQ"
-        //        let password = "Z_eKqqlhTNuccg9C_gKT8A"
-        //        let loginString = NSString(format: "%@:%@", username, password)
-        //        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-        //        let base64LoginString = loginData.base64EncodedStringWithOptions(nil)
-        //        request.setValue(base64LoginString, forHTTPHeaderField: "Authorization")
-        //        var strData = NSString(data: request!, encoding: NSUTF8StringEncoding)
     }
     
     func sendIceBreaker(){
@@ -230,7 +238,7 @@ class ViewController: JSQMessagesViewController {
         let color = UIColor(red: r, green: g, blue: b, alpha: 0.5)
         
         let nameLength = count(name)
-        let initials : String? = name.substringToIndex(advance(senderId.startIndex, min(1, nameLength)))
+        let initials : String? = name.substringToIndex(advance(senderDisplayName.startIndex, min(1, nameLength)))
         let userImage = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initials, backgroundColor: color, textColor: UIColor.blackColor(), font: UIFont.systemFontOfSize(CGFloat(13)), diameter: diameter)
         
         avatars[name] = userImage
@@ -241,9 +249,12 @@ class ViewController: JSQMessagesViewController {
         JSQMessagesCollectionViewCell.registerMenuAction("customaction:")
         JSQMessagesCollectionViewCell.registerMenuAction(Selector("delete:"))
         UIMenuController.sharedMenuController().menuItems = [UIMenuItem(title: "Custom Action", action: "customaction:")]
+        
         inputToolbar.contentView.leftBarButtonItem = nil
         automaticallyScrollsToMostRecentMessage = true
         navigationController?.navigationBar.topItem?.title = "5Friends"
+        self.senderId = "default"
+        self.senderDisplayName = "default"
         setupSender()
     }
     
@@ -325,8 +336,6 @@ class ViewController: JSQMessagesViewController {
         let attributes : [NSObject:AnyObject] = [NSForegroundColorAttributeName:cell.textView.textColor, NSUnderlineStyleAttributeName: 1]
         cell.textView.linkTextAttributes = attributes
         
-        //        cell.textView.linkTextAttributes = [NSForegroundColorAttributeName: cell.textView.textColor,
-        //            NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle]
         return cell
     }
     
