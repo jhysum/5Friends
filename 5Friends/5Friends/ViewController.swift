@@ -246,9 +246,8 @@ class ViewController: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        JSQMessagesCollectionViewCell.registerMenuAction("customaction:")
-        JSQMessagesCollectionViewCell.registerMenuAction(Selector("delete:"))
-        UIMenuController.sharedMenuController().menuItems = [UIMenuItem(title: "Custom Action", action: "customaction:")]
+        JSQMessagesCollectionViewCell.registerMenuAction("reportuser:")
+        UIMenuController.sharedMenuController().menuItems = [UIMenuItem(title: "Report User", action: "reportuser:")]
         
         inputToolbar.contentView.leftBarButtonItem = nil
         automaticallyScrollsToMostRecentMessage = true
@@ -280,9 +279,16 @@ class ViewController: JSQMessagesViewController {
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        sendMessage(text, sender: senderId)
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            self.sendMessage(text, sender: senderId)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.finishSendingMessage()
+            }
+        }
+
         
-        finishSendingMessage()
+
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
@@ -298,11 +304,9 @@ class ViewController: JSQMessagesViewController {
         
         if message.senderId == senderId {
             return outgoingBubbleImageView
-//            return UIImageView(image: outgoingBubbleImageView.image, highlightedImage: outgoingBubbleImageView.highlightedImage)
         }
         
         return incomingBubbleImageView
-//        return UIImageView(image: incomingBubbleImageView.image, highlightedImage: incomingBubbleImageView.highlightedImage)
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
@@ -324,7 +328,7 @@ class ViewController: JSQMessagesViewController {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
         
-        cell.canPerformAction("customaction:", withSender: senderId)
+        cell.canPerformAction("reportuser:", withSender: senderId)
         
         let message = messages[indexPath.item]
         if message.senderId == senderId {
@@ -361,8 +365,7 @@ class ViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) -> Bool {
-        println("this is the action \(action)")
-        if (action == "customaction:") {
+        if (action == "reportuser:") {
                 return true
         }
         
@@ -370,14 +373,20 @@ class ViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
-        println("this is the perform action: \(action)")
-        if (action == "customaction:") {
-            customaction()
+        println("this is the item path: \(indexPath.item)")
+        println("\(messages[indexPath.item])")
+        if (action == "reportuser:") {
+            reportUser(messages[indexPath.item])
         }
     }
     
-    func customaction(){
-        println("this is deleting")
+    func reportUser(sender: AnyObject!){
+        let push = PFPush()
+        let reportedUser = sender.senderId()
+        // Be sure to use the plural 'setChannels'.
+        push.setChannel("Admin")
+        push.setData([ "alert": "This is the person they are reporting on: \(reportedUser) at group: \(self.groupnumber!)", "badge": "Increment", "sound": "default" ])
+        push.sendPush(nil)
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {

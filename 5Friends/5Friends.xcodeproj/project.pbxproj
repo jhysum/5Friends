@@ -313,6 +313,7 @@
 					};
 					1D75B1611B1597BC003B702A = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = HA8UL7M8CK;
 						TestTargetID = 1D75B14C1B1597BC003B702A;
 					};
 				};
@@ -629,6 +630,8 @@
 			baseConfigurationReference = AC995789A79B58FD7FAA877D /* Pods-5FriendsTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -640,6 +643,7 @@
 				INFOPLIST_FILE = 5FriendsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/5Friends.app/5Friends";
 			};
 			name = Debug;
@@ -649,6 +653,8 @@
 			baseConfigurationReference = 41ED4C3A2A10D0A78D420C68 /* Pods-5FriendsTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -656,6 +662,7 @@
 				INFOPLIST_FILE = 5FriendsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/5Friends.app/5Friends";
 			};
 			name = Release;
