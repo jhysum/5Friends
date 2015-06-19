@@ -1,19 +1,28 @@
-package fivefriends.jesse.fivefriends;
+package com.firefriends.fivefriends;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String FIREBASE_URL = "https://android-chat.firebaseio-demo.com";
+
+    private String mUsername;
+    private Firebase mFirebaseRef;
+    private ValueEventListener mConnectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
         setContentView(R.layout.activity_main);
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
